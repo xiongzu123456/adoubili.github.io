@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>马铃豆191 视频大合集以及播放器</title>
+<meta name="theme-color" content="#0e1015">
+<meta name="description" content="马铃豆191（B站 mid 572465432）的全部视频合集与播放器，支持扫码登录、关注、点赞、投币、收藏、个性化推荐与收藏历史。">
+<link rel="icon" href="./icon.svg">
+<link rel="apple-touch-icon" href="./icon.svg">
+<style>
+:root{--bg:#0e1015;--bg2:#151a24;--card:#1a1f2b;--line:#2a3140;--text:#e9ecf4;--sub:#98a1b6;--pink:#fb7299;--pink2:#ff9bb8;--blue:#00aeec;--gold:#ffb300;--ok:#39d98a;--r:14px}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0}
+body{background:radial-gradient(900px 520px at 12% -12%,rgba(251,114,153,.18),transparent 60%),radial-gradient(760px 440px at 92% -4%,rgba(0,174,236,.13),transparent 55%),var(--bg);color:var(--text);min-height:100vh;font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",system-ui,sans-serif}
+img{display:block;max-width:100%}
+button{font-family:inherit;cursor:pointer}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 16px 64px}
+.topbar{position:sticky;top:0;z-index:40;background:rgba(14,16,21,.8);backdrop-filter:blur(18px);border-bottom:1px solid rgba(255,255,255,.06)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.logo{width:42px;height:42px;border-radius:12px;flex:0 0 auto;overflow:hidden;box-shadow:0 6px 18px rgba(251,114,153,.32)}
+.logo img{width:100%;height:100%;object-fit:cover}
+.brand-name{font-size:14.5px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand-sub{font-size:11px;color:var(--sub);margin-top:3px;display:flex;align-items:center;gap:6px}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ok);box-shadow:0 0 8px var(--ok)}
+.dot.off{background:#8b93a7;box-shadow:none}
+.spacer{flex:1}
+.icon-btn{height:36px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--text);font-size:13px;display:inline-flex;align-items:center;gap:6px;transition:.18s;white-space:nowrap}
+.icon-btn:hover{background:rgba(255,255,255,.1)}
+.icon-btn.primary{background:linear-gradient(135deg,#fb7299,#ff4f81);border:none;color:#fff;font-weight:600}
+.avatar-mini{width:24px;height:24px;border-radius:50%;object-fit:cover;background:#252b3a}
+.menu-wrap{position:relative}
+.menu{position:absolute;right:0;top:44px;width:236px;padding:6px;border-radius:12px;background:#1b202c;border:1px solid var(--line);box-shadow:0 18px 44px rgba(0,0,0,.55);display:none;z-index:60}
+.menu.open{display:block}
+.menu-item{width:100%;text-align:left;background:none;border:none;color:var(--text);padding:10px;border-radius:8px;font-size:13.5px;display:flex;align-items:center;gap:10px}
+.menu-item:hover{background:rgba(255,255,255,.07)}
+.menu-item .mi{width:18px;text-align:center;color:var(--pink)}
+.menu-sep{height:1px;background:var(--line);margin:4px 6px}
+.menu-tip{padding:8px 10px;font-size:11.5px;color:var(--sub);line-height:1.55}
+.hero{position:relative;margin-top:16px;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--bg2)}
+.hero-banner{position:absolute;inset:0;background-image:url("https://i0.hdslb.com/bfs/space/cb1c3ef28ad2b2452e25be767cfe4ddf6e46e6d1.jpg");background-size:cover;background-position:center;filter:blur(2px) saturate(1.2);opacity:.55}
+.hero-mask{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,16,21,.35),rgba(14,16,21,.94))}
+.hero-in{position:relative;padding:22px 20px;display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.avatar{width:86px;height:86px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,.22);background:#252b3a;flex:0 0 auto}
+.hero-main{flex:1;min-width:220px}
+.name-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hero-name{font-size:21px;font-weight:800;letter-spacing:.3px}
+.badge{font-size:11px;padding:3px 8px;border-radius:999px;background:rgba(251,114,153,.16);color:#ffc2d4;border:1px solid rgba(251,114,153,.35)}
+.lv{font-size:10px;padding:2px 6px;border-radius:4px;background:#3a4256;color:#cfd7e6}
+.sign{margin-top:8px;font-size:13px;color:#c3cad9;line-height:1.6;max-width:640px}
+.hero-stats{display:flex;gap:22px;margin-top:14px;flex-wrap:wrap}
+.stat .num{font-size:18px;font-weight:800}
+.stat .num small{font-size:11px;font-weight:500;color:var(--sub);margin-left:2px}
+.stat .lab{font-size:11px;color:var(--sub);margin-top:2px}
+.src-pill{display:inline-flex;align-items:center;gap:6px;margin-top:14px;font-size:11px;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:4px 10px;background:rgba(255,255,255,.03);cursor:pointer}
+.hero-actions{display:flex;flex-direction:column;gap:8px;align-items:stretch}
+.btn-follow{height:38px;padding:0 22px;border-radius:10px;border:none;background:linear-gradient(135deg,#fb7299,#ff4f81);color:#fff;font-weight:700;font-size:13.5px;box-shadow:0 8px 20px rgba(251,114,153,.28)}
+.btn-follow.on{background:rgba(255,255,255,.07);color:var(--sub);box-shadow:none;border:1px solid var(--line)}
+.btn-ghost-sm{height:32px;padding:0 12px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#c9d1e0;font-size:12px}
+.btn-ghost-sm:hover{background:rgba(255,255,255,.09)}
+.tabs{display:flex;gap:6px;margin:20px 0 12px;overflow:auto;padding-bottom:2px}
+.tab{border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--sub);border-radius:10px;padding:8px 14px;font-size:13px;white-space:nowrap}
+.tab.on{color:#fff;border-color:rgba(251,114,153,.5);background:rgba(251,114,153,.16)}
+.toolbar{display:flex;gap:8px;align-items:center;margin-bottom:12px;flex-wrap:wrap}
+select.icon-btn{height:32px;font-size:12.5px;padding:0 8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(212px,1fr));gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;cursor:pointer;transition:.18s}
+.card:hover{transform:translateY(-2px);border-color:#3a4357;box-shadow:0 12px 26px rgba(0,0,0,.35)}
+.thumb{position:relative;aspect-ratio:16/10;background:#252b3a}
+.thumb img{width:100%;height:100%;object-fit:cover}
+.dur{position:absolute;right:6px;bottom:6px;background:rgba(0,0,0,.75);color:#fff;font-size:11px;padding:1px 5px;border-radius:4px}
+.plays{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.62);color:#fff;font-size:11px;padding:1px 6px;border-radius:4px}
+.play-ico{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:0;transition:.18s;background:rgba(0,0,0,.28)}
+.play-ico i{width:44px;height:44px;border-radius:50%;background:rgba(251,114,153,.9);position:relative}
+.play-ico i:after{content:"";position:absolute;left:17px;top:13px;border-left:14px solid #fff;border-top:9px solid transparent;border-bottom:9px solid transparent}
+.card:hover .play-ico{opacity:1}
+.meta{padding:9px 10px 10px}
+.title{font-size:13px;line-height:1.45;height:38px;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.sub-meta{display:flex;justify-content:space-between;gap:8px;margin-top:6px;font-size:11px;color:var(--sub)}
+.acts{display:flex;gap:6px;margin-top:9px}
+.act{flex:1;height:26px;border-radius:7px;border:1px solid var(--line);background:rgba(255,255,255,.03);color:#c2cada;font-size:11px}
+.act.on{color:#ffc7d8;border-color:rgba(251,114,153,.45);background:rgba(251,114,153,.14)}
+.act:hover{background:rgba(255,255,255,.09)}
+.state{border:1px dashed var(--line);border-radius:var(--r);padding:26px 18px;text-align:center;color:var(--sub);font-size:13px;line-height:1.9;background:rgba(255,255,255,.02)}
+.state b{color:var(--text);display:block;font-size:14.5px;margin-bottom:4px}
+.modal{position:fixed;inset:0;z-index:80;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(6,8,12,.78);backdrop-filter:blur(6px)}
+.modal.on{display:flex}
+.panel{width:min(920px,100%);max-height:90vh;overflow:auto;background:#161b25;border:1px solid var(--line);border-radius:16px;box-shadow:0 24px 70px rgba(0,0,0,.6)}
+.panel-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 16px;background:#161b25;border-bottom:1px solid var(--line)}
+.panel-title{font-size:14px;font-weight:700;flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.close{width:30px;height:30px;border-radius:8px;border:1px solid var(--line);background:rgba(255,255,255,.04);color:#cfd7e6;font-size:14px}
+.panel-body{padding:16px}
+.player-box{position:relative;width:100%;aspect-ratio:16/9;background:#000;border-radius:12px;overflow:hidden}
+.player-box iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid-title{font-size:15px;font-weight:700;margin-top:12px;line-height:1.5}
+.vid-meta{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--sub);margin-top:8px}
+.vid-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.big-act{height:36px;padding:0 16px;border-radius:9px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:#dfe5f2;font-size:12.5px}
+.big-act.on{border-color:rgba(251,114,153,.5);background:rgba(251,114,153,.16);color:#ffc8d8}
+.qr-wrap{display:flex;gap:20px;flex-wrap:wrap}
+.qr-box{width:220px;height:220px;border-radius:14px;background:#fff;padding:8px;position:relative;flex:0 0 auto;display:flex;align-items:center;justify-content:center}
+.qr-box img{width:100%;height:100%;object-fit:contain}
+.qr-cover{position:absolute;inset:0;border-radius:14px;background:rgba(12,14,19,.93);color:#fff;display:none;flex-direction:column;align-items:center;justify-content:center;gap:8px;font-size:12.5px;text-align:center;padding:14px}
+.qr-cover.on{display:flex}
+.qr-side{flex:1;min-width:210px;font-size:12.5px;color:var(--sub);line-height:1.8}
+.qr-side h3{margin:0 0 6px;color:var(--text);font-size:14.5px}
+.qr-status{margin-top:10px;font-size:12.5px;color:var(--pink2);min-height:18px}
+.linkbox{display:none;gap:6px;margin-top:10px}
+.linkbox input{flex:1;min-width:0;height:34px;border-radius:8px;border:1px solid var(--line);background:#0f131b;color:#cfd7e6;font-size:11.5px;padding:0 10px}
+.note{font-size:11.5px;color:var(--sub);line-height:1.75;margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+.searchbar{display:flex;gap:8px}
+.searchbar input{flex:1;height:40px;border-radius:10px;border:1px solid var(--line);background:#0f131b;color:#eef2fa;padding:0 12px;font-size:13.5px;outline:none}
+.searchbar button{height:40px;border-radius:10px;border:none;background:linear-gradient(135deg,#fb7299,#ff4f81);color:#fff;font-weight:600;padding:0 18px}
+.sub-tabs{display:flex;gap:6px;margin:12px 0;align-items:center}
+.sub-tab{border:1px solid var(--line);background:rgba(255,255,255,.04);color:var(--sub);border-radius:8px;padding:6px 12px;font-size:12px}
+.sub-tab.on{border-color:rgba(251,114,153,.45);color:#ffc3d5;background:rgba(251,114,153,.13)}
+.up-row{display:flex;align-items:center;gap:12px;padding:9px;border-radius:10px;cursor:pointer}
+.up-row:hover{background:rgba(255,255,255,.06)}
+.up-row img{width:44px;height:44px;border-radius:50%;object-fit:cover;background:#242b3a;flex:0 0 auto}
+.u-name{font-size:13.5px;font-weight:600}
+.u-sign{font-size:11.5px;color:var(--sub);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.u-fans{font-size:11.5px;color:var(--sub);flex:0 0 auto}
+.field label{font-size:12px;color:var(--sub);display:block;margin:10px 0 6px}
+.field input{width:100%;height:38px;border-radius:9px;border:1px solid var(--line);background:#0f131b;color:#e8eef9;padding:0 11px;font-size:12.5px;outline:none}
+.row-btns{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+#toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,16px);z-index:120;background:rgba(28,33,45,.96);border:1px solid var(--line);color:#eef2fa;padding:10px 16px;border-radius:10px;font-size:13px;opacity:0;pointer-events:none;transition:.22s;max-width:86vw;text-align:center}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+footer{margin-top:46px;text-align:center;color:#5f6879;font-size:11.5px;line-height:1.9}
+footer a{color:#8a94a8}
+@media(max-width:560px){.hero-in{padding:16px}.avatar{width:64px;height:64px}.hero-name{font-size:18px}.hero-actions{flex-direction:row;width:100%}.grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px}.title{font-size:12px}}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">
+      <div class="logo"><img src="./icon.svg" alt="马铃豆191"></div>
+      <div style="min-width:0">
+        <div class="brand-name">马铃豆191 视频大合集以及播放器</div>
+        <div class="brand-sub"><span class="dot off" id="liveDot"></span><span id="brandSub">正在同步…</span></div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+    <button class="icon-btn" id="btnAccount"><img class="avatar-mini" id="meAvatar" alt="我" src="./icon.svg"><span id="meName">登录</span></button>
+    <div class="menu-wrap">
+      <button class="icon-btn" id="btnMore">更多 <span style="font-size:15px;line-height:1">⋮</span></button>
+      <div class="menu" id="moreMenu">
+        <button class="menu-item" data-act="login"><span class="mi">▣</span><span>扫码登录 / 我的账号</span></button>
+        <button class="menu-item" data-act="other"><span class="mi">⌕</span><span>其他视频（搜索 UP 主）</span></button>
+        <button class="menu-item" data-act="settings"><span class="mi">⚙</span><span>接口设置</span></button>
+        <div class="menu-sep"></div>
+        <button class="menu-item" data-act="refresh"><span class="mi">↻</span><span>刷新主页数据</span></button>
+        <button class="menu-item" data-act="copy"><span class="mi">⧉</span><span>复制主页链接</span></button>
+        <button class="menu-item" data-act="logout"><span class="mi">⏻</span><span>退出登录</span></button>
+        <div class="menu-tip" id="menuTip">登录后可关注、点赞、投币、收藏，并看到推荐与收藏历史。</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="hero">
+    <div class="hero-banner"></div>
+    <div class="hero-mask"></div>
+    <div class="hero-in">
+      <img class="avatar" id="upAvatar" alt="UP 主头像" src="./icon.svg">
+      <div class="hero-main">
+        <div class="name-row">
+          <span class="hero-name" id="upName">马铃豆191</span>
+          <span class="badge" id="upFansBadge">— 粉丝</span>
+          <span class="lv" id="upLv" style="display:none">Lv6</span>
+        </div>
+        <div class="sign" id="upSign">正在读取 UP 主资料…</div>
+        <div class="hero-stats">
+          <div class="stat"><div class="num" id="stFans">—</div><div class="lab">粉丝</div></div>
+          <div class="stat"><div class="num" id="stFollow">—</div><div class="lab">关注</div></div>
+          <div class="stat"><div class="num" id="stVideos">—</div><div class="lab">视频</div></div>
+        </div>
+        <div class="src-pill" id="srcPill"><span class="dot off"></span><span id="srcText">正在检测接口…</span></div>
+      </div>
+      <div class="hero-actions">
+        <button class="btn-follow" id="btnFollow">+ 关注</button>
+        <button class="btn-ghost-sm" id="btnOpenBili">在 B 站打开主页 ↗</button>
+      </div>
+    </div>
+  </section>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab on" data-tab="video">视频合集</button>
+    <button class="tab" data-tab="rcmd">为你推荐</button>
+    <button class="tab" data-tab="fav">我的收藏</button>
+    <button class="tab" data-tab="history">观看历史</button>
+  </nav>
+
+  <div class="toolbar" id="toolbar">
+    <select class="icon-btn" id="orderSel">
+      <option value="pubdate">最新发布</option>
+      <option value="click">最多播放</option>
+      <option value="stow">最多收藏</option>
+    </select>
+    <span style="font-size:11.5px;color:var(--sub)" id="countTip"></span>
+    <div class="spacer"></div>
+    <button class="btn-ghost-sm" id="btnReload">刷新</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+  <div id="stateBox"></div>
+  <div style="text-align:center;margin-top:22px" id="loadMoreBox"></div>
+
+  <footer>
+    <div>马铃豆191 视频大合集以及播放器</div>
+    <div style="margin-top:4px">数据来自哔哩哔哩公开接口 · 视频版权归 UP 主及 B 站所有</div>
+    <div style="margin-top:4px"><a href="https://space.bilibili.com/572465432" target="_blank" rel="noopener">space.bilibili.com/572465432</a></div>
+  </footer>
+</div>
+
+<div class="modal" id="playerModal">
+  <div class="panel">
+    <div class="panel-head"><div class="panel-title" id="playerTitle">播放</div><button class="close" data-close="playerModal">✕</button></div>
+    <div class="panel-body">
+      <div class="player-box"><iframe id="playerFrame" allowfullscreen scrolling="no" frameborder="0" allow="autoplay;fullscreen;encrypted-media"></iframe></div>
+      <div class="vid-title" id="vidTitle">—</div>
+      <div class="vid-meta" id="vidMeta"></div>
+      <div class="vid-btns">
+        <button class="big-act" id="actLike">👍 点赞</button>
+        <button class="big-act" id="actCoin">🪙 投币</button>
+        <button class="big-act" id="actFav">⭐ 收藏</button>
+        <button class="big-act" id="actBili">↗ 去 B 站看</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="loginModal">
+  <div class="panel" style="width:min(680px,100%)">
+    <div class="panel-head"><div class="panel-title">扫码登录哔哩哔哩</div><button class="close" data-close="loginModal">✕</button></div>
+    <div class="panel-body">
+      <div class="qr-wrap">
+        <div class="qr-box">
+          <img id="qrImg" alt="登录二维码">
+          <div class="qr-cover" id="qrCover"><div id="qrCoverText">二维码加载中…</div></div>
+        </div>
+        <div class="qr-side">
+          <h3>用 B 站手机 App 扫码</h3>
+          <p>扫码并在手机上点「确认登录」，本页会自动写入 Cookie 并刷新主页：粉丝数、推荐、收藏与历史都会按你的账号重新加载。</p>
+          <div class="qr-status" id="qrStatus"></div>
+          <div class="row-btns">
+            <button class="btn-ghost-sm" id="qrRefresh">换一张二维码</button>
+            <button class="btn-ghost-sm" id="qrCopy">复制登录链接</button>
+          </div>
+          <div class="linkbox" id="linkBox"><input id="loginLink" readonly><button class="btn-ghost-sm" id="linkOpen">打开</button></div>
+          <div class="note">扫码需要接口后端在线（右上角「更多 → 接口设置」）。Cookie 只保存在你自己的浏览器 localStorage，不会上传到任何第三方服务器。</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="otherModal">
+  <div class="panel" style="width:min(780px,100%)">
+    <div class="panel-head"><div class="panel-title">其他视频 · 搜索 UP 主 / 视频</div><button class="close" data-close="otherModal">✕</button></div>
+    <div class="panel-body">
+      <div class="searchbar">
+        <input id="searchInput" placeholder="输入 UP 主名字或视频关键词，例如：马铃豆191" autocomplete="off">
+        <button id="btnSearch">搜索</button>
+      </div>
+      <div class="sub-tabs">
+        <button class="sub-tab on" data-stype="up">UP 主</button>
+        <button class="sub-tab" data-stype="video">视频</button>
+        <div class="spacer"></div>
+        <button class="sub-tab" id="btnBackHome">回到马铃豆191</button>
+      </div>
+      <div id="searchResult"></div>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal">
+  <div class="panel" style="width:min(680px,100%)">
+    <div class="panel-head"><div class="panel-title">接口设置</div><button class="close" data-close="settingsModal">✕</button></div>
+    <div class="panel-body">
+      <div class="field">
+        <label>接口后端地址（Cloudflare Worker / Node 服务）</label>
+        <input id="proxyInput" placeholder="https://xxx.workers.dev 或 http://127.0.0.1:8080" autocomplete="off">
+      </div>
+      <div class="row-btns">
+        <button class="icon-btn primary" id="btnSaveProxy">保存并连接</button>
+        <button class="btn-ghost-sm" id="btnTestProxy">测试连通</button>
+        <button class="btn-ghost-sm" id="btnClear">清除登录与缓存</button>
+      </div>
+      <div class="qr-status" id="proxyStatus"></div>
+      <div class="note">后端代码：<b>worker/worker.js</b>（Cloudflare Worker 直接粘贴部署，或 <b>node server/server.js</b> 本地跑）。<br>留空 = 只用仓库里的数据快照，可浏览和播放，但不能登录与互动。</div>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="./app.js"></script>
+</body>
+</html>
