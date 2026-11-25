@@ -1,0 +1,14 @@
+{
+  "name": "malingdou191-video-hub",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "马铃豆191 视频大合集 · 播放器（B站 UP 主主页 + 播放器 + 扫码登录 + 点赞投币收藏）",
+  "scripts": {
+    "start": "node server/server.js",
+    "snapshot": "node scripts/fetch-snapshot.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
