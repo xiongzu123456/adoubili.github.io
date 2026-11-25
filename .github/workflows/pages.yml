@@ -28,15 +28,16 @@ jobs:
         continue-on-error: true
         run: node scripts/fetch-snapshot.mjs
       - uses: actions/configure-pages@v5
+        continue-on-error: true
         with:
           enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: .
-          exclude: 'worker|server|scripts|node_modules|.git'
 
   deploy:
     needs: build
+    if: always()
     runs-on: ubuntu-latest
     environment:
       name: github-pages
